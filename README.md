@@ -14,7 +14,7 @@
 ## วิธีการติดตั้ง
  1.pull repo
  	`git clone https://github.com/phone1246/JAP-aw-easystart2.git `
- 2. ตั้งค่าInstances ที่จำนมาแสดงผล
+ 2.ตั้งค่าInstances ที่จำนมาแสดงผล
  	- /src/app/theme/services/config.js
 	```javascript
 	 	function config() {
