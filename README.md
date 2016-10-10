@@ -72,55 +72,6 @@
  ```
 	
 	
-* Code List Instance Lambda
-      - ```javascript
-        var http = require('http');
-        var aws = require('aws-sdk');
-        var ec2 = new aws.EC2();
-        var response = {"code":0,"message":"null"};
-        exports.handler = (event, context, callback) => {
-        
-       if(typeof event.Instances !== "object"){
-           console.log("Typeof"+typeof event.Instances);
-           response.code = 500;
-           response.message = "Input Invalid";
-           callback(null,response);
-           return;
-       }else{
-           num_instance = event.Instances.length;
-           var Instance_data = event.Instances;
-               if (num_instance===0){callback(null,{"status":500,"message":"Instanc    es Not Found"}); return;
-               }else{
-                  ec2.describeInstances({InstanceIds:Instance_data}, function(err,     data) {
-                        if(err ||         data.Reservations.length===0){callback(null,{"status":500,"message":"Instances Not Found"}); return;}
-                        var Instances = data.Reservations;
-                            response.code=200;
-                            response.message= "Success";
-                            response.data = [];
-                            
-                        for (var i in Instances){
-                            var Instance =Instances[i].Instances[0];
-                            console.log (Instance);
-                            response.data.push({
-                               "InstanceId": Instance.InstanceId,
-                               "Ip": Instance.PrivateIpAddress,
-                               "Type" : Instance.InstanceType,
-                               "Tags" : Instance.Tags,
-                               "State": Instance.State
-                            });
-                            
-                        }
-                        callback(null,response);
-                        
-                   
-                });
-           }
-        }
-       
-      
-        };
- 		
- 		```
 
  * ตั้งค่า URL สำหรับ List Instance
  	- /src/app/theme/services/aws-service.js
