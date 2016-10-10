@@ -5,13 +5,20 @@
 เป็น Soruce สำหรับใช้งานกับ API Gateway + Lambda เพื่อสามารถให้ Developer สามารถ Start Instance ที่ปิดใช้งานอยู่ในช่วง
 นอกเวลาทำงานในกรณีที่มีความจำเป็น โดยระบบจะใช้  Serverless 
 
+
+
 ## ScreenShot
 ![Alt text](https://s15.postimg.org/sv8vkwmcb/sample_bluradmin.png","ScreenShot")
+
+## สิ่งที่ต้องใช้งานบน AWS
+ * API Gateways
+ * Lambda
+ * S3
 
 ### Enable CORS  บน API Gateways
 `http://enable-cors.org/server_awsapigateway.html`
 
-### Code Start Instances เช็ตจากสถาณะ
+### Code Lambda Start Instances เช็ตจากสถาณะ
 	
 ```javascript
 var aws = require('aws-sdk');
@@ -50,7 +57,7 @@ var ec2 = new aws.EC2();
 	};
 ```
 
-### Code Start Instances เช็ตจากสถาณะ
+### Code Lambda Start Instances เช็ตจากสถาณะ
 
 ```javascript
 var http = require('http');
@@ -87,10 +94,7 @@ var ec2 = new aws.EC2();
 	  
  
 
-## สิ่งที่ต้องใช้งานบน AWS
- * API Gateways
- * Lambda
- * S3
+
 
 ## วิธีการติดตั้ง
  * pull repo
@@ -160,5 +164,5 @@ var ec2 = new aws.EC2();
 
 ### From Phonekkub
 
-สามารถสอบถามเพิ่มเติมได้ตลอดครับ
+ - หากผิิดพลาดประการใดต้องขออภัยด้วยครับและยืนดีรับฟังข้อติชมครับ
 	
