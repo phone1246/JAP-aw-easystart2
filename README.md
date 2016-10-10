@@ -3,10 +3,10 @@
 # AWS-EasyStart2
 
 เป็น Soruce สำหรับใช้งานกับ API Gateway + Lambda เพื่อสามารถให้ Developer สามารถ Start Instance ที่ปิดใช้งานอยู่ในช่วง
-นอกเวลาทำงานในกรณีที่มีความจำเป็น โดยระบบจะใช้ Concept Serverless 
+นอกเวลาทำงานในกรณีที่มีความจำเป็น โดยระบบจะใช้  Serverless 
 
 ## ScreenShot
-<a href="http://www.mx7.com/view2/zpA7QfTzDTTKAlfp" target="_blank"><img border="0" src="http://www.mx7.com/i/b58/gW3X4W.png" /></a>
+![Alt text](https://s15.postimg.org/sv8vkwmcb/sample_bluradmin.png","ScreenShot")
 
 ### Enable CORS  บน API Gateways
 `http://enable-cors.org/server_awsapigateway.html`
@@ -14,15 +14,14 @@
 ### Code Start Instances เช็ตจากสถาณะ
 	
 ```javascript
-		var aws = require('aws-sdk');
-		var ec2 = new aws.EC2();
-		exports.handler = (event, context, callback) => {
-		    
-	    var evn_data = event.Instances;
+var aws = require('aws-sdk');
+var ec2 = new aws.EC2();
+	exports.handler = (event, context, callback) => {	    
+	var evn_data = event.Instances;
 	    var params={
 	        InstanceIds:[]
 	    };
-	    console.log(evn_data.length);
+	   
 	    if(evn_data.length>0){
 	        for(var i in evn_data){
 	            if(!evn_data[i])continue;
@@ -37,10 +36,10 @@
 	        var statusCode = data.Reservations[0].Instances[0].State.Code;
 	        if (statusCode==80){ 
 	          
-	            ec2.startInstances({InstanceIds:[InstanceID]}, function(err, data) {
-	              if (err) console.log(err, err.stack); // an error occurred
-	              else       callback(null,{"Code":80,"status":"stopped","action":"Starting","raw":data}) ;          // successful response
-	            });
+	    ec2.startInstances({InstanceIds:[InstanceID]}, function(err, data) {
+	        if (err) console.log(err, err.stack); // an error occurred
+	        else  callback(null,{"Code":80,"status":"stopped","action":"Starting","raw":data}) ; 
+	        });
 	        }else{
 	              callback(null,{"Code":500,"status":"Error","message":"Instance Not In Stopped State"}); 
 	        }
@@ -48,7 +47,7 @@
 	
 	
 	
-		};
+	};
 ```
 
 ### Code Start Instances เช็ตจากสถาณะ
