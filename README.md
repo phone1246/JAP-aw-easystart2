@@ -1,19 +1,47 @@
 [![Build Status](https://travis-ci.org/akveo/blur-admin.svg?branch=master)](https://travis-ci.org/akveo/blur-admin)
 
-# BlurAdmin Angular admin panel front-end framework
+# AWS-EasyStart2
 
-Customizable admin panel framework made with :heart: by [Akveo team](http://akveo.com/). Follow us on [Twitter](https://twitter.com/akveo_inc) to get latest news about this template first!
+เป็น Soruce สำหรับใช้งานกับ API Gateway + Lambda เพื่อสามารถให้ Developer สามารถ Start Instance ที่ปิดใช้งานอยู่ในช่วง
+นอกเวลาทำงานในกรณีที่มีความจำเป็น โดยระบบจะใช้ Concept Serverless 
 
-### Demo
-**[Mint version demo](http://akveo.com/blur-admin-mint/)**             |  **[Blur version demo](http://akveo.com/blur-admin/)**
-:-------------------------:|:-------------------------:
-![Mint version demo](http://i.imgur.com/A3TMviJ.png)  |  ![Blur version demo](http://i.imgur.com/EAoiK2O.jpg)
 
-## Angular 2 version
-Here you can find Angular2 based version: [ng2-admin](https://github.com/akveo/ng2-admin).
+## สิ่งที่ต้องใช้งานบน AWS
+ * API Gateways
+ * Lambda
+ * S3
 
-### Documentation
-Installation, customization and other useful articles: https://akveo.github.io/blur-admin/
+## วิธีการติดตั้ง
+ 1.pull repo
+ 	`git clone https://github.com/phone1246/JAP-aw-easystart2.git `
+ 2. ตั้งค่าInstances ที่จำนมาแสดงผล
+ 	- /src/app/theme/services/config.js
+	```javascript
+	 	function config() {
+	    return {
+	    "Instance":[
+	      "i-002f6e0adb5f8528c",
+	      "i-0ef50ff7288f8e1f5",
+	      "i-06b14ee15cec6b370"
+	    ]
+	    };
+	```    
+    
+
+ 3.ตั้งค่า URL สำหรับ List Instance
+ 	- /src/app/theme/services/aws-service.js
+```javascript
+		$http({url: "URL HERE",
+		                skipAuthorization: true,
+		                method: 'POST',
+		                headers: {'X-Api-Key': 'application/x-www-form-urlencoded'},
+		                data: { "Instances": config.Instance
+
+		                              }
+		                          }).success(function(response){
+		                            return response;
+		                          });
+```                          
 
 *If you have problems installing and just want to download JS and css files, you can find download links here*: http://akveo.github.io/blur-admin/articles/091-downloads/
 
