@@ -68,9 +68,9 @@
   	```
   * สำหรับ Developer ที่จะพัฒนาต่อ
   	** Run Gulp เพื่อจำลอง web server http://localhost:3000 (หากมีการแก้ไข File ใน src Gulp จะทำการ  Auto Refresh Browser ให้)
-  		` gulp serve `
+  		``` gulp serve ```
   	** สำหรับ Production จะอยู่ใน Folder release ซึ่งจะต้อง Build ก่อนแล้วจากนั้นสามารถนำ Folder release ไปใช้งานได้เลยเพราะ Gulp  จะทำการ Build File ให้
-  		` gulp build `
+  		``` gulp build ```
 
 
 *If you have problems installing and just want to download JS and css files, you can find download links here*: http://akveo.github.io/blur-admin/articles/091-downloads/
