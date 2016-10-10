@@ -13,7 +13,7 @@
 
 ### Code Start Instances เช็ตจากสถาณะ
 	
-	```javascript
+```javascript
 		var aws = require('aws-sdk');
 		var ec2 = new aws.EC2();
 		exports.handler = (event, context, callback) => {
@@ -49,7 +49,7 @@
 	
 	
 		};
-	```
+```
 
 ### Code Start Instances เช็ตจากสถาณะ
 
