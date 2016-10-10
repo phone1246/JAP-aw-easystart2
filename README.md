@@ -6,6 +6,90 @@
 นอกเวลาทำงานในกรณีที่มีความจำเป็น โดยระบบจะใช้ Concept Serverless 
 
 
+### Enable CORS  บน API Gateways
+`http://enable-cors.org/server_awsapigateway.html`
+
+
+
+
+	var aws = require('aws-sdk');
+	var ec2 = new aws.EC2();
+	exports.handler = (event, context, callback) => {
+	    
+    var evn_data = event.Instances;
+    var params={
+        InstanceIds:[]
+    };
+    console.log(evn_data.length);
+    if(evn_data.length>0){
+        for(var i in evn_data){
+            if(!evn_data[i])continue;
+            console.log(evn_data[i].id);
+          params.InstanceIds.push(evn_data[i].id);  
+        }
+    }
+    
+    ec2.describeInstances(params,function(err,data){
+        if(err){ callback(500, 'Error Get Instance Detail'); return; }
+        var InstanceID = data.Reservations[0].Instances[0].InstanceId;
+        var statusCode = data.Reservations[0].Instances[0].State.Code;
+        if (statusCode==80){ 
+          
+            ec2.startInstances({InstanceIds:[InstanceID]}, function(err, data) {
+              if (err) console.log(err, err.stack); // an error occurred
+              else       callback(null,{"Code":80,"status":"stopped","action":"Starting","raw":data}) ;          // successful response
+            });
+        }else{
+              callback(null,{"Code":500,"status":"Error","message":"Instance Not In Stopped State"}); 
+        }
+    });
+
+
+
+	};
+
+
+###Code Start Instances เช็ตจากสถาณะ
+	  ```javascript
+        var http = require('http');
+        var aws = require('aws-sdk');
+        var ec2 = new aws.EC2();
+    
+
+	    exports.handler = (event, context, callback) => {
+	        
+	        var evn_data = event.Instances;
+	        var params={
+	            InstanceIds:[]
+	        };
+	        console.log(evn_data.length);
+	        if(evn_data.length>0){
+	            for(var i in evn_data){
+	                if(!evn_data[i])continue;
+	                console.log(evn_data[i].id);
+	              params.InstanceIds.push(evn_data[i].id);  
+	            }
+	        }
+	    
+	            ec2.describeInstances(params,function(err,data){
+	                if(err){ callback(500, 'Error Get Instance Detail'); return; }
+	                var InstanceID = data.Reservations[0].Instances[0].InstanceId;
+	                var statusCode = data.Reservations[0].Instances[0].State.Code;
+	                if (statusCode==80){ 
+	                  
+	                    ec2.startInstances({InstanceIds:[InstanceID]}, function(err, data) {
+	                      if (err) console.log(err, err.stack); // an error occurred
+	                      else       callback(null,{"Code":80,"status":"stopped","action":"Starting","raw":data}) ;          // successful response
+	                    });
+	                }else{
+	                      callback(null,{"Code":500,"status":"Error","message":"Instance Not In Stopped State"}); 
+	                }
+	            });
+	        
+	          
+	        };
+ 
+
 ## สิ่งที่ต้องใช้งานบน AWS
  * API Gateways
  * Lambda
@@ -26,56 +110,14 @@
 	    ]
 	    };
 	```   
-* Code Start Instances เช็ตจากสถาณะ
- - ```javascript
-        var http = require('http');
-        var aws = require('aws-sdk');
-        var ec2 = new aws.EC2();
-    
-    //16 = running
-    //
-    exports.handler = (event, context, callback) => {
-        
-        var evn_data = event.Instances;
-        var params={
-            InstanceIds:[]
-        };
-        console.log(evn_data.length);
-        if(evn_data.length>0){
-            for(var i in evn_data){
-                if(!evn_data[i])continue;
-                console.log(evn_data[i].id);
-              params.InstanceIds.push(evn_data[i].id);  
-            }
-        }
-    
-            ec2.describeInstances(params,function(err,data){
-                if(err){ callback(500, 'Error Get Instance Detail'); return; }
-                var InstanceID = data.Reservations[0].Instances[0].InstanceId;
-                var statusCode = data.Reservations[0].Instances[0].State.Code;
-                if (statusCode==80){ 
-                  
-                    ec2.startInstances({InstanceIds:[InstanceID]}, function(err, data) {
-                      if (err) console.log(err, err.stack); // an error occurred
-                      else       callback(null,{"Code":80,"status":"stopped","action":"Starting","raw":data}) ;          // successful response
-                    });
-                }else{
-                      callback(null,{"Code":500,"status":"Error","message":"Instance Not In Stopped State"}); 
-                }
-            });
-        
-            //console.log(params);
-            //console.log(event.sourceIP);
-            // TODO implement
-           // callback(null, 'Hello from Lambda');
-        };
- ```
+	
+
 	
 	
 
  * ตั้งค่า URL สำหรับ List Instance
  	- /src/app/theme/services/aws-service.js
-```javascript
+		```javascript
 		$http({url: "URL HERE",
 		                skipAuthorization: true,
 		                method: 'POST',
@@ -86,7 +128,7 @@
 		                          }).success(function(response){
 		                            return response;
 		                          });
-```    
+	```    
 
  * ตั้งค่า URL เมื่อกำปุ่มให้เรียก API Gateways สำหรับ Start EC2
  	- /src/app/pages/aws/list/listCtrl.js
