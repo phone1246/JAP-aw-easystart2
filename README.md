@@ -5,89 +5,93 @@
 เป็น Soruce สำหรับใช้งานกับ API Gateway + Lambda เพื่อสามารถให้ Developer สามารถ Start Instance ที่ปิดใช้งานอยู่ในช่วง
 นอกเวลาทำงานในกรณีที่มีความจำเป็น โดยระบบจะใช้ Concept Serverless 
 
+## ScreenShot
+<a href="http://www.mx7.com/view2/zpA7QfTzDTTKAlfp" target="_blank"><img border="0" src="http://www.mx7.com/i/b58/gW3X4W.png" /></a>
 
 ### Enable CORS  บน API Gateways
 `http://enable-cors.org/server_awsapigateway.html`
 
-
-
-
-	var aws = require('aws-sdk');
-	var ec2 = new aws.EC2();
-	exports.handler = (event, context, callback) => {
-	    
-    var evn_data = event.Instances;
-    var params={
-        InstanceIds:[]
-    };
-    console.log(evn_data.length);
-    if(evn_data.length>0){
-        for(var i in evn_data){
-            if(!evn_data[i])continue;
-            console.log(evn_data[i].id);
-          params.InstanceIds.push(evn_data[i].id);  
-        }
-    }
-    
-    ec2.describeInstances(params,function(err,data){
-        if(err){ callback(500, 'Error Get Instance Detail'); return; }
-        var InstanceID = data.Reservations[0].Instances[0].InstanceId;
-        var statusCode = data.Reservations[0].Instances[0].State.Code;
-        if (statusCode==80){ 
-          
-            ec2.startInstances({InstanceIds:[InstanceID]}, function(err, data) {
-              if (err) console.log(err, err.stack); // an error occurred
-              else       callback(null,{"Code":80,"status":"stopped","action":"Starting","raw":data}) ;          // successful response
-            });
-        }else{
-              callback(null,{"Code":500,"status":"Error","message":"Instance Not In Stopped State"}); 
-        }
-    });
-
-
-
-	};
-
-
-###Code Start Instances เช็ตจากสถาณะ
-	  ```javascript
-        var http = require('http');
-        var aws = require('aws-sdk');
-        var ec2 = new aws.EC2();
-    
-
-	    exports.handler = (event, context, callback) => {
-	        
-	        var evn_data = event.Instances;
-	        var params={
-	            InstanceIds:[]
-	        };
-	        console.log(evn_data.length);
-	        if(evn_data.length>0){
-	            for(var i in evn_data){
-	                if(!evn_data[i])continue;
-	                console.log(evn_data[i].id);
-	              params.InstanceIds.push(evn_data[i].id);  
-	            }
+### Code Start Instances เช็ตจากสถาณะ
+	
+	```javascript
+		var aws = require('aws-sdk');
+		var ec2 = new aws.EC2();
+		exports.handler = (event, context, callback) => {
+		    
+	    var evn_data = event.Instances;
+	    var params={
+	        InstanceIds:[]
+	    };
+	    console.log(evn_data.length);
+	    if(evn_data.length>0){
+	        for(var i in evn_data){
+	            if(!evn_data[i])continue;
+	            console.log(evn_data[i].id);
+	          params.InstanceIds.push(evn_data[i].id);  
 	        }
+	    }
 	    
-	            ec2.describeInstances(params,function(err,data){
-	                if(err){ callback(500, 'Error Get Instance Detail'); return; }
-	                var InstanceID = data.Reservations[0].Instances[0].InstanceId;
-	                var statusCode = data.Reservations[0].Instances[0].State.Code;
-	                if (statusCode==80){ 
-	                  
-	                    ec2.startInstances({InstanceIds:[InstanceID]}, function(err, data) {
-	                      if (err) console.log(err, err.stack); // an error occurred
-	                      else       callback(null,{"Code":80,"status":"stopped","action":"Starting","raw":data}) ;          // successful response
-	                    });
-	                }else{
-	                      callback(null,{"Code":500,"status":"Error","message":"Instance Not In Stopped State"}); 
-	                }
-	            });
-	        
+	    ec2.describeInstances(params,function(err,data){
+	        if(err){ callback(500, 'Error Get Instance Detail'); return; }
+	        var InstanceID = data.Reservations[0].Instances[0].InstanceId;
+	        var statusCode = data.Reservations[0].Instances[0].State.Code;
+	        if (statusCode==80){ 
 	          
-	        };
+	            ec2.startInstances({InstanceIds:[InstanceID]}, function(err, data) {
+	              if (err) console.log(err, err.stack); // an error occurred
+	              else       callback(null,{"Code":80,"status":"stopped","action":"Starting","raw":data}) ;          // successful response
+	            });
+	        }else{
+	              callback(null,{"Code":500,"status":"Error","message":"Instance Not In Stopped State"}); 
+	        }
+	    });
+	
+	
+	
+		};
+	```
+
+### Code Start Instances เช็ตจากสถาณะ
+
+```javascript
+	       var http = require('http');
+	        var aws = require('aws-sdk');
+	        var ec2 = new aws.EC2();
+	          exports.handler = (event, context, callback) => {
+		        
+		        var evn_data = event.Instances;
+		        var params={
+		            InstanceIds:[]
+		        };
+		        console.log(evn_data.length);
+		        if(evn_data.length>0){
+		            for(var i in evn_data){
+		                if(!evn_data[i])continue;
+		                console.log(evn_data[i].id);
+		              params.InstanceIds.push(evn_data[i].id);  
+		            }
+		        }
+		    
+		            ec2.describeInstances(params,function(err,data){
+		                if(err){ callback(500, 'Error Get Instance Detail'); return; }
+		                var InstanceID = data.Reservations[0].Instances[0].InstanceId;
+		                var statusCode = data.Reservations[0].Instances[0].State.Code;
+		                if (statusCode==80){ 
+		                  
+		                    ec2.startInstances({InstanceIds:[InstanceID]}, function(err, data) {
+		                      if (err) console.log(err, err.stack); // an error occurred
+		                      else       callback(null,{"Code":80,"status":"stopped","action":"Starting","raw":data}) ;          // successful response
+		                    });
+		                }else{
+		                      callback(null,{"Code":500,"status":"Error","message":"Instance Not In Stopped State"}); 
+		                }
+		            });
+		        
+		          
+		        };
+```
+
+	  
  
 
 ## สิ่งที่ต้องใช้งานบน AWS
@@ -154,41 +158,14 @@
 	    };                      
   	```
   * สำหรับ Developer ที่จะพัฒนาต่อ
-  	-0 Run Gulp เพื่อจำลอง web server http://localhost:3000 (หากมีการแก้ไข File ใน src Gulp จะทำการ  Auto Refresh Browser ให้)
+  	* Run Gulp เพื่อจำลอง web server http://localhost:3000 (หากมีการแก้ไข File ใน src Gulp จะทำการ  Auto Refresh Browser ให้)
   	-	``` gulp serve ```
-  * สำหรับ Production จะอยู่ใน Folder release ซึ่งจะต้อง Build ก่อนแล้วจากนั้นสามารถนำ Folder release ไปใช้งานได้เลยเพราะ Gulp  จะทำการ Build File ให้
+  * สำหรับ Production จะอยู่ใน Folder release ซึ่งจะต้อง Build ก่อนแล้วจากนั้นสามารถนำ Folder release ไปใช้งานได้เลยเพราะ Gulp  จะทำการ Build File ให้ จากนั้นให้ทำการ Upload ขึ้น S3
   	-	``` gulp build ```
 
 
-*If you have problems installing and just want to download JS and css files, you can find download links here*: http://akveo.github.io/blur-admin/articles/091-downloads/
 
-## How can I support developers?
-- Star our GitHub repo
-- Create pull requests, submit bugs, suggest new features or documentation updates
-- Follow us on [Twitter](https://twitter.com/akveo_inc)
-- Like our page on [Facebook](https://www.facebook.com/akveo/)
+### From Phonekkub
 
-## Can I hire you guys?
-Yes! We are available for hire. Visit [our homepage](http://akveo.com/) or simply leave us a note to contact@akveo.com. We will be happy to work with you!
-
-## Features
-* Responsive layout
-* High resolution
-* Bootstrap CSS Framework
-* Sass
-* Gulp build
-* AngularJS
-* Jquery
-* Charts (amChart, Chartist, Chart.js, Morris)
-* Maps (Google, Leaflet, amMap)
-* etc
-
-License
--------------
-<a href=/LICENSE.txt target="_blank">MIT</a> license.
-
-### From akveo
-
-Enjoy!
-We're always happy to hear your feedback.
+สามารถสอบถามเพิ่มเติมได้ตลอดครับ
 	
