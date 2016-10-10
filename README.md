@@ -41,7 +41,37 @@
 		                          }).success(function(response){
 		                            return response;
 		                          });
-```                          
+```    
+
+ * ตั้งค่า URL เมื่อกำปุ่มให้เรียก API Gateways สำหรับ Start EC2
+ 	- /src/app/pages/aws/list/listCtrl.js
+  	```javascript
+	  	$scope.startEC2 = function(InstanceIDs) {
+	      $http({
+	      url: "URL HERE",
+	      skipAuthorization: true,
+	      method: 'POST',
+	      headers: {'X-Api-Key': 'application/x-www-form-urlencoded'},
+	      data: {
+	         "Instances":[
+	            {"id":InstanceIDs}
+	         ]
+	       }
+	     }).success(function(response){
+	      if (response.action ==="Starting" && response.Code === 80){
+
+	      }
+	      });
+
+
+	    };                      
+  	```
+  * สำหรับ Developer ที่จะพัฒนาต่อ
+  	** Run Gulp เพื่อจำลอง web server http://localhost:3000 (หากมีการแก้ไข File ใน src Gulp จะทำการ  Auto Refresh Browser ให้)
+  		` gulp serve `
+  	** สำหรับ Production จะอยู่ใน Folder release ซึ่งจะต้อง Build ก่อนแล้วจากนั้นสามารถนำ Folder release ไปใช้งานได้เลยเพราะ Gulp  จะทำการ Build File ให้
+  		` gulp build `
+
 
 *If you have problems installing and just want to download JS and css files, you can find download links here*: http://akveo.github.io/blur-admin/articles/091-downloads/
 
