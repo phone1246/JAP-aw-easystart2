@@ -12,9 +12,9 @@
  * S3
 
 ## วิธีการติดตั้ง
- 1.pull repo
+ * pull repo
  	`git clone https://github.com/phone1246/JAP-aw-easystart2.git `
- 2.ตั้งค่าInstances ที่จำนมาแสดงผล
+ * ตั้งค่าInstances ที่จำนมาแสดงผล
  	- /src/app/theme/services/config.js
 	```javascript
 	 	function config() {
@@ -28,7 +28,7 @@
 	```    
     
 
- 3.ตั้งค่า URL สำหรับ List Instance
+ * ตั้งค่า URL สำหรับ List Instance
  	- /src/app/theme/services/aws-service.js
 ```javascript
 		$http({url: "URL HERE",
